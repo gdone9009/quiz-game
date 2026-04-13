@@ -20,8 +20,43 @@ class QuizGame:
         with open(self.data_file, 'w', encoding='utf-8') as f:
             json.dump(self.data, f, ensure_ascii=False, indent=2)
 
+    # --- [업데이트된 기능: 퀴즈 추가] ---
+    def add_quiz(self):
+        print("\n➕ 새로운 퀴즈를 추가합니다.")
+        question = input("질문 내용: ")
+        options = []
+        for i in range(1, 5):
+            opt = input(f"보기 {i}: ")
+            options.append(opt)
+        
+        while True:
+            try:
+                answer = int(input("정답 번호 (1-4): "))
+                if 1 <= answer <= 4: break
+                else: print("⚠️ 1~4 사이의 숫자를 입력하세요.")
+            except ValueError:
+                print("⚠️ 숫자만 입력 가능합니다.")
+        
+        description = input("정답 해설: ")
+        
+        new_quiz = {
+            "id": len(self.data['quizzes']) + 1,
+            "question": question,
+            "options": options,
+            "answer": answer,
+            "description": description
+        }
+        
+        self.data['quizzes'].append(new_quiz)
+        self.save_data()
+        print("✅ 퀴즈가 성공적으로 추가되었습니다!")
+
     def run_quiz(self):
         """메인 기능을 실행합니다."""
+        if not self.data['quizzes']:
+            print("❌ 등록된 퀴즈가 없습니다. 퀴즈를 먼저 추가해주세요.")
+            return
+
         print(f"\n📝 퀴즈를 시작합니다! (총 {len(self.data['quizzes'])}문제)")
         score = 0
         
@@ -40,18 +75,15 @@ class QuizGame:
                 else:
                     print(f"❌ 틀렸습니다. 정답은 {q['answer']}번입니다.")
             except ValueError:
-                print("⚠️ 숫자만 입력해 주세요! 이번 문제는 건너뜁니다.")
+                print("⚠️ 숫자만 입력해 주세요! 이번 문제는 건너뜜.")
 
         self.show_result(score)
 
     def show_result(self, score):
-        """최종 결과를 출력하고 기록을 갱신합니다."""
         total = len(self.data['quizzes'])
         final_score = int((score / total) * 100)
-        
         print("=" * 40)
         print(f"🏆 결과: {total}문제 중 {score}문제 정답! ({final_score}점)")
-        
         if final_score > self.data['high_score']:
             print("🎉 새로운 최고 점수입니다!")
             self.data['high_score'] = final_score
@@ -62,20 +94,21 @@ class QuizGame:
 
 def main():
     game = QuizGame()
-    
     while True:
         print("\n🚀 Git과 함께하는 Python 첫 발자국")
         print("1. 퀴즈 풀기")
-        print("2. 프로그램 종료")
+        print("2. 퀴즈 추가") # 메뉴 추가
+        print("3. 프로그램 종료")
         choice = input("선택: ")
-        
         if choice == '1':
             game.run_quiz()
         elif choice == '2':
-            print("👋 프로그램을 종료합니다. 수고하셨습니다!")
+            game.add_quiz() # 기능 호출
+        elif choice == '3':
+            print("👋 종료합니다.")
             break
         else:
-            print("알 수 없는 메뉴입니다. 다시 선택해 주세요.")
+            print("알 수 없는 메뉴입니다.")
 
 if __name__ == "__main__":
     main()
