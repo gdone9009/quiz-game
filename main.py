@@ -174,6 +174,27 @@ class QuizGame:
         self.save_data()
         print("\n✅ 새로운 퀴즈가 성공적으로 추가되었습니다!")
 
+    def view_quizzes(self):
+        """
+        [10단계] 현재 시스템에 저장된 모든 퀴즈의 목록을 출력합니다.
+        데이터 리스트를 순회하며 주요 정보를 가독성 있게 표현합니다.
+        """
+        quizzes = self.data.get('quizzes', [])
+        
+        if not quizzes:
+            print("\n❌ 저장된 퀴즈가 없습니다.")
+            return
+
+        print("\n" + "=" * 50)
+        print(f"{'ID':<4} | {'카테고리':<8} | {'퀴즈 질문'}")
+        print("-" * 50)
+
+        for q in quizzes:
+            # f-string의 정렬 기능을 사용하여 표(Table) 형식으로 출력
+            print(f"{q['id']:<4} | {q.get('category', '미분류'):<8} | {q['question']}")
+        
+        print("=" * 50)
+        print(f"총 {len(quizzes)}개의 퀴즈가 저장되어 있습니다.")
 
 def main():
     """
@@ -203,7 +224,7 @@ def main():
         elif choice == '2':
             game.add_quiz() # 구현 중 메시지 대신 메서드 호출로 변경
         elif choice == '3':
-            print("\n🚧 [목록 보기] 기능을 구현 중입니다.")
+            game.view_quizzes() # 구현 중 메시지 대신 메서드 호출
         elif choice == '4':
             # 루프를 탈출하여 프로그램 종료
             print("\n👋 프로그램을 종료합니다. 이용해 주셔서 감사합니다!")
