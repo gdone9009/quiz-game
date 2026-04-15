@@ -128,6 +128,52 @@ class QuizGame:
         else:
             print("💡 최고 기록 경신에 실패했습니다. 조금 더 분발해 보세요!")
 
+    def add_quiz(self):
+        """
+        [9단계] 사용자가 새로운 퀴즈를 입력하여 시스템에 추가하는 기능입니다.
+        입력받은 데이터를 구조화하여 리스트에 추가하고 파일에 저장합니다.
+        """
+        print("\n" + "+" * 40)
+        print("➕ 새로운 영화 퀴즈 추가")
+        print("+" * 40)
+
+        # 1. 정보 입력 받기
+        category = input("카테고리 (예: 영화, 배우, 명대사): ")
+        question = input("퀴즈 질문을 입력하세요: ")
+        
+        options = []
+        for i in range(1, 5):
+            opt = input(f"보기 {i}번: ")
+            options.append(opt)
+            
+        # 2. 정답 번호 유효성 검사 (8단계에서 배운 try-except 활용)
+        while True:
+            try:
+                answer = int(input("정답 번호 (1~4): "))
+                if 1 <= answer <= 4:
+                    break
+                else:
+                    print("⚠️ 1에서 4 사이의 숫자를 입력해 주세요.")
+            except ValueError:
+                print("⚠️ 숫자만 입력 가능합니다.")
+                
+        description = input("정답에 대한 간단한 해설: ")
+
+        # 3. 데이터 구조화 (딕셔너리 생성)
+        new_quiz = {
+            "id": len(self.data['quizzes']) + 1,  # 자동 ID 부여
+            "category": category,
+            "question": question,
+            "options": options,
+            "answer": answer,
+            "description": description
+        }
+
+        # 4. 리스트에 추가 및 파일 저장 (7단계 save_data 재사용)
+        self.data['quizzes'].append(new_quiz)
+        self.save_data()
+        print("\n✅ 새로운 퀴즈가 성공적으로 추가되었습니다!")
+
 
 def main():
     """
@@ -155,7 +201,7 @@ def main():
         if choice == '1':
             game.run_quiz() # 퀴즈 실행 메서드 호출
         elif choice == '2':
-            print("\n🚧 [퀴즈 추가] 기능을 구현 중입니다.")
+            game.add_quiz() # 구현 중 메시지 대신 메서드 호출로 변경
         elif choice == '3':
             print("\n🚧 [목록 보기] 기능을 구현 중입니다.")
         elif choice == '4':
