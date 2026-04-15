@@ -38,7 +38,7 @@ class QuizGame:
             self.data = {"high_score": 0, "quizzes": []}
 
     # def run_quiz가 QuizGame 클래스 안에 속해 있어야 합니다.
-def run_quiz(self):
+    def run_quiz(self):
         """저장된 퀴즈 데이터를 출력하고 사용자의 정답을 판별합니다."""
         if not self.data.get('quizzes'):
             print("\n❌ 등록된 퀴즈가 없습니다.")
@@ -78,7 +78,7 @@ def run_quiz(self):
             print("\n⚠️ 숫자 번호로 입력해 주세요!")
             
         print("-" * 40)
-        
+
 def main():
     """
     프로그램의 진입점(Entry Point).
