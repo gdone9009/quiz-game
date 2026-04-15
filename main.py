@@ -38,36 +38,47 @@ class QuizGame:
             self.data = {"high_score": 0, "quizzes": []}
 
     # def run_quiz가 QuizGame 클래스 안에 속해 있어야 합니다.
-    def run_quiz(self):
-        """
-        저장된 퀴즈 데이터를 화면에 출력하고 사용자로부터 정답을 받는 메인 게임 루프.
-        (현재 4단계에서는 첫 번째 문제를 출력하는 구조를 먼저 잡습니다.)
-        """
-        # 1. 퀴즈 데이터 존재 여부 확인 (데이터가 없을 경우 예외 처리)
+def run_quiz(self):
+        """저장된 퀴즈 데이터를 출력하고 사용자의 정답을 판별합니다."""
         if not self.data.get('quizzes'):
-            print("\n❌ 등록된 퀴즈가 없습니다. 퀴즈를 먼저 추가해 주세요.")
+            print("\n❌ 등록된 퀴즈가 없습니다.")
             return
 
         print("\n" + "-"*40)
         print("🎬 영화 퀴즈를 시작합니다!")
         
-        # 2. 첫 번째 퀴즈 데이터 추출 (테스트용)
-        # 5단계에서 이 부분을 전체 반복문(for문)으로 확장할 예정입니다.
+        # [4단계 복습] 첫 번째 문제 가져오기
         quiz = self.data['quizzes'][0]
         
-        # 3. 퀴즈 내용 출력 (카테고리, 질문)
         print(f"\n[카테고리: {quiz.get('category', '미분류')}]")
         print(f"질문: {quiz['question']}")
         
-        # 4. 보기 출력 (enumerate를 활용하여 1번부터 번호를 매김)
-        # 프로그래밍의 인덱스는 0부터 시작하지만, 사용자는 1부터 인식하기 때문임.
         print("\n< 보기 >")
         for i, option in enumerate(quiz['options'], 1):
             print(f"{i}. {option}")
         
         print("\n" + "-"*40)
-        print("💡 정답 체크 로직은 다음 단계(5단계)에서 구현됩니다.")
 
+        # --- [5단계 신규 로직 시작] ---
+        
+        # 1. 사용자로부터 정답 입력 받기
+        # input()은 항상 '문자열'로 받기 때문에 숫자로 비교하려면 int() 변환이 필요함
+        user_input = input("👉 정답 번호를 입력하세요: ")
+        
+        # 2. 정답 판별 로직
+        # 사용자가 입력한 값(user_input)과 실제 정답(quiz['answer'])을 비교
+        # 데이터의 answer는 숫자형이므로 int(user_input)으로 형변환 후 비교함
+        try:
+            if int(user_input) == quiz['answer']:
+                print(f"\n✅ 정답입니다! ({quiz['description']})")
+            else:
+                print(f"\n❌ 틀렸습니다. 정답은 {quiz['answer']}번입니다.")
+        except ValueError:
+            # 숫자가 아닌 문자를 입력했을 경우를 대비한 최소한의 예외 처리
+            print("\n⚠️ 숫자 번호로 입력해 주세요!")
+            
+        print("-" * 40)
+        
 def main():
     """
     프로그램의 진입점(Entry Point).
