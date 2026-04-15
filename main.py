@@ -63,15 +63,30 @@ class QuizGame:
                 print(f"{i}. {option}")
             
             # 2. 사용자 입력 및 정답 확인
-            try:
-                user_input = input("\n👉 정답 번호를 입력하세요: ")
-                if int(user_input) == quiz['answer']:
-                    print(f"✅ 정답입니다! ({quiz['description']})")
-                    score += 1  # 정답일 경우 점수 증가
-                else:
-                    print(f"❌ 틀렸습니다. 정답은 {quiz['answer']}번입니다.")
-            except ValueError:
-                print("⚠️ 숫자가 아닌 값이 입력되어 오답 처리되었습니다.")
+            # --- [8단계 핵심: 유효한 입력이 들어올 때까지 반복] ---
+            while True:
+                user_input = input("\n👉 정답 번호를 입력하세요 (1~4): ")
+                
+                try:
+                    # 1. 정수 변환 시도 (문자 입력 시 ValueError 발생)
+                    choice_num = int(user_input)
+                    
+                    # 2. 숫자 범위 유효성 검사 (보기 번호 안에 있는지 확인)
+                    if 1 <= choice_num <= len(quiz['options']):
+                        # 유효한 입력이므로 반복문 탈출
+                        break
+                    else:
+                        print(f"⚠️ {1}번부터 {len(quiz['options'])}번 사이의 숫자를 입력해 주세요.")
+                except ValueError:
+                    # 숫자가 아닌 문자가 들어왔을 때의 처리
+                    print("⚠️ 잘못된 입력입니다. '숫자'만 입력할 수 있습니다.")
+            
+            # 3. 정답 판별 (이미 검증된 choice_num 사용)
+            if choice_num == quiz['answer']:
+                print(f"✅ 정답입니다! ({quiz['description']})")
+                score += 1
+            else:
+                print(f"❌ 틀렸습니다. 정답은 {quiz['answer']}번입니다.")
             
             print("-" * 40)
 
