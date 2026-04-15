@@ -1,114 +1,42 @@
-import json
-import os
+import json  # JSON 형식의 데이터를 처리하기 위한 표준 라이브러리 임포트
+import os    # 파일 경로 존재 여부 등 시스템 환경 확인을 위한 라이브러리 임포트
 
 class QuizGame:
+    """
+    퀴즈 게임의 전체 로직을 관리하는 클래스.
+    데이터의 로드, 저장, 게임 실행 등 모든 기능을 캡슐화(Encapsulation)하여 관리함.
+    """
     def __init__(self, data_file='state.json'):
+        """
+        인스턴스 초기화 메서드.
+        :param data_file: 퀴즈 데이터가 저장된 JSON 파일의 경로
+        """
         self.data_file = data_file
+        
+        # 프로그램 시작과 동시에 저장된 데이터를 메모리로 불러오는 메서드 호출
         self.load_data()
 
     def load_data(self):
-        """JSON 파일에서 데이터를 읽어옵니다."""
+        """
+        하드디스크의 JSON 파일을 읽어 파이썬 객체(Dictionary)로 변환하는 메서드.
+        이 과정은 '데이터 영속성(Persistence)'을 구현하는 핵심 단계임.
+        """
+        # 1. 파일 존재 여부 확인 (방어적 프로그래밍: 파일이 없어서 발생하는 에러 방지)
         if os.path.exists(self.data_file):
+            # 2. 파일 열기 (with 문을 사용하여 파일 처리가 끝나면 자동으로 닫히도록 관리)
             with open(self.data_file, 'r', encoding='utf-8') as f:
+                # 3. json.load()를 통해 텍스트(JSON)를 파이썬 딕셔너리로 변환(Deserialization)
                 self.data = json.load(f)
+            
+            # 4. 로드 완료 후 현재 상태를 콘솔에 출력하여 디버깅 및 사용자 확인 유도
+            print(f"✅ 데이터를 성공적으로 불러왔습니다.")
+            print(f"📊 현재 저장된 최고 점수: {self.data.get('high_score', 0)}점")
+            print(f"📚 등록된 총 퀴즈 수: {len(self.data.get('quizzes', []))}문항")
         else:
-            print("❌ 데이터 파일을 찾을 수 없습니다.")
+            # 파일이 없을 경우 프로그램이 멈추지 않도록 기본 데이터 구조 초기화
+            print("⚠️ 데이터 파일이 존재하지 않습니다. 새로운 환경을 구성합니다.")
             self.data = {"high_score": 0, "quizzes": []}
 
-    def save_data(self):
-        """최고 점수 등 변경된 데이터를 저장합니다."""
-        with open(self.data_file, 'w', encoding='utf-8') as f:
-            json.dump(self.data, f, ensure_ascii=False, indent=2)
-
-    # --- [업데이트된 기능: 퀴즈 추가] ---
-    def add_quiz(self):
-        print("\n➕ 새로운 퀴즈를 추가합니다.")
-        question = input("질문 내용: ")
-        options = []
-        for i in range(1, 5):
-            opt = input(f"보기 {i}: ")
-            options.append(opt)
-        
-        while True:
-            try:
-                answer = int(input("정답 번호 (1-4): "))
-                if 1 <= answer <= 4: break
-                else: print("⚠️ 1~4 사이의 숫자를 입력하세요.")
-            except ValueError:
-                print("⚠️ 숫자만 입력 가능합니다.")
-        
-        description = input("정답 해설: ")
-        
-        new_quiz = {
-            "id": len(self.data['quizzes']) + 1,
-            "question": question,
-            "options": options,
-            "answer": answer,
-            "description": description
-        }
-        
-        self.data['quizzes'].append(new_quiz)
-        self.save_data()
-        print("✅ 퀴즈가 성공적으로 추가되었습니다!")
-
-    def run_quiz(self):
-        """메인 기능을 실행합니다."""
-        if not self.data['quizzes']:
-            print("❌ 등록된 퀴즈가 없습니다. 퀴즈를 먼저 추가해주세요.")
-            return
-
-        print(f"\n📝 퀴즈를 시작합니다! (총 {len(self.data['quizzes'])}문제)")
-        score = 0
-        
-        for idx, q in enumerate(self.data['quizzes'], 1):
-            print("-" * 40)
-            print(f"[문제 {idx}]")
-            print(q['question'])
-            for i, opt in enumerate(q['options'], 1):
-                print(f"{i}. {opt}")
-            
-            try:
-                user_ans = int(input("\n정답 입력: "))
-                if user_ans == q['answer']:
-                    print("✅ 정답입니다! " + f"({q['description']})")
-                    score += 1
-                else:
-                    print(f"❌ 틀렸습니다. 정답은 {q['answer']}번입니다.")
-            except ValueError:
-                print("⚠️ 숫자만 입력해 주세요! 이번 문제는 건너뜜.")
-
-        self.show_result(score)
-
-    def show_result(self, score):
-        total = len(self.data['quizzes'])
-        final_score = int((score / total) * 100)
-        print("=" * 40)
-        print(f"🏆 결과: {total}문제 중 {score}문제 정답! ({final_score}점)")
-        if final_score > self.data['high_score']:
-            print("🎉 새로운 최고 점수입니다!")
-            self.data['high_score'] = final_score
-            self.save_data()
-        else:
-            print(f"현재 최고 기록: {self.data['high_score']}점")
-        print("=" * 40)
-
-def main():
-    game = QuizGame()
-    while True:
-        print("\n🚀 Git과 함께하는 Python 첫 발자국")
-        print("1. 퀴즈 풀기")
-        print("2. 퀴즈 추가") # 메뉴 추가
-        print("3. 프로그램 종료")
-        choice = input("선택: ")
-        if choice == '1':
-            game.run_quiz()
-        elif choice == '2':
-            game.add_quiz() # 기능 호출
-        elif choice == '3':
-            print("👋 종료합니다.")
-            break
-        else:
-            print("알 수 없는 메뉴입니다.")
-
 if __name__ == "__main__":
-    main()
+    # QuizGame 클래스의 인스턴스를 생성하여 프로그램 실행의 기점을 만듦
+    game = QuizGame()
