@@ -37,6 +37,37 @@ class QuizGame:
             print("⚠️ 데이터 파일이 존재하지 않습니다. 새로운 환경을 구성합니다.")
             self.data = {"high_score": 0, "quizzes": []}
 
+    # def run_quiz가 QuizGame 클래스 안에 속해 있어야 합니다.
+    def run_quiz(self):
+        """
+        저장된 퀴즈 데이터를 화면에 출력하고 사용자로부터 정답을 받는 메인 게임 루프.
+        (현재 4단계에서는 첫 번째 문제를 출력하는 구조를 먼저 잡습니다.)
+        """
+        # 1. 퀴즈 데이터 존재 여부 확인 (데이터가 없을 경우 예외 처리)
+        if not self.data.get('quizzes'):
+            print("\n❌ 등록된 퀴즈가 없습니다. 퀴즈를 먼저 추가해 주세요.")
+            return
+
+        print("\n" + "-"*40)
+        print("🎬 영화 퀴즈를 시작합니다!")
+        
+        # 2. 첫 번째 퀴즈 데이터 추출 (테스트용)
+        # 5단계에서 이 부분을 전체 반복문(for문)으로 확장할 예정입니다.
+        quiz = self.data['quizzes'][0]
+        
+        # 3. 퀴즈 내용 출력 (카테고리, 질문)
+        print(f"\n[카테고리: {quiz.get('category', '미분류')}]")
+        print(f"질문: {quiz['question']}")
+        
+        # 4. 보기 출력 (enumerate를 활용하여 1번부터 번호를 매김)
+        # 프로그래밍의 인덱스는 0부터 시작하지만, 사용자는 1부터 인식하기 때문임.
+        print("\n< 보기 >")
+        for i, option in enumerate(quiz['options'], 1):
+            print(f"{i}. {option}")
+        
+        print("\n" + "-"*40)
+        print("💡 정답 체크 로직은 다음 단계(5단계)에서 구현됩니다.")
+
 def main():
     """
     프로그램의 진입점(Entry Point).
@@ -61,8 +92,7 @@ def main():
         
         # 4. 입력 값에 따른 조건문 처리 (제어 흐름 설계)
         if choice == '1':
-            # 아직 구현되지 않은 기능은 print문으로 예고하여 구조를 먼저 잡음
-            print("\n🚧 [퀴즈 풀기] 기능을 구현 중입니다.")
+            game.run_quiz() # 퀴즈 실행 메서드 호출
         elif choice == '2':
             print("\n🚧 [퀴즈 추가] 기능을 구현 중입니다.")
         elif choice == '3':
