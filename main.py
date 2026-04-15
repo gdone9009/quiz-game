@@ -39,45 +39,46 @@ class QuizGame:
 
     # def run_quiz가 QuizGame 클래스 안에 속해 있어야 합니다.
     def run_quiz(self):
-        """저장된 퀴즈 데이터를 출력하고 사용자의 정답을 판별합니다."""
+        """저장된 모든 퀴즈를 순차적으로 출제하고 최종 점수를 계산합니다."""
         if not self.data.get('quizzes'):
             print("\n❌ 등록된 퀴즈가 없습니다.")
             return
 
-        print("\n" + "-"*40)
-        print("🎬 영화 퀴즈를 시작합니다!")
+        print("\n" + "="*40)
+        print("🎬 영화 퀴즈 게임을 시작합니다!")
+        print("="*40)
         
-        # [4단계 복습] 첫 번째 문제 가져오기
-        quiz = self.data['quizzes'][0]
-        
-        print(f"\n[카테고리: {quiz.get('category', '미분류')}]")
-        print(f"질문: {quiz['question']}")
-        
-        print("\n< 보기 >")
-        for i, option in enumerate(quiz['options'], 1):
-            print(f"{i}. {option}")
-        
-        print("\n" + "-"*40)
+        score = 0  # 맞춘 개수를 저장할 변수 초기화
+        quizzes = self.data['quizzes']
+        total = len(quizzes)  # 전체 문제 수
 
-        # --- [5단계 신규 로직 시작] ---
-        
-        # 1. 사용자로부터 정답 입력 받기
-        # input()은 항상 '문자열'로 받기 때문에 숫자로 비교하려면 int() 변환이 필요함
-        user_input = input("👉 정답 번호를 입력하세요: ")
-        
-        # 2. 정답 판별 로직
-        # 사용자가 입력한 값(user_input)과 실제 정답(quiz['answer'])을 비교
-        # 데이터의 answer는 숫자형이므로 int(user_input)으로 형변환 후 비교함
-        try:
-            if int(user_input) == quiz['answer']:
-                print(f"\n✅ 정답입니다! ({quiz['description']})")
-            else:
-                print(f"\n❌ 틀렸습니다. 정답은 {quiz['answer']}번입니다.")
-        except ValueError:
-            # 숫자가 아닌 문자를 입력했을 경우를 대비한 최소한의 예외 처리
-            print("\n⚠️ 숫자 번호로 입력해 주세요!")
+        # 1. for 루프를 사용하여 모든 문제를 하나씩 순회
+        for idx, quiz in enumerate(quizzes, 1):
+            print(f"\n[문제 {idx} / {total}]")
+            print(f"카테고리: {quiz.get('category', '미분류')}")
+            print(f"질문: {quiz['question']}")
             
-        print("-" * 40)
+            print("\n< 보기 >")
+            for i, option in enumerate(quiz['options'], 1):
+                print(f"{i}. {option}")
+            
+            # 2. 사용자 입력 및 정답 확인
+            try:
+                user_input = input("\n👉 정답 번호를 입력하세요: ")
+                if int(user_input) == quiz['answer']:
+                    print(f"✅ 정답입니다! ({quiz['description']})")
+                    score += 1  # 정답일 경우 점수 증가
+                else:
+                    print(f"❌ 틀렸습니다. 정답은 {quiz['answer']}번입니다.")
+            except ValueError:
+                print("⚠️ 숫자가 아닌 값이 입력되어 오답 처리되었습니다.")
+            
+            print("-" * 40)
+
+        # 3. 최종 결과 출력 (점수 계산)
+        final_percentage = int((score / total) * 100)
+        print(f"\n종료! 당신의 최종 점수는 {final_percentage}점입니다.")
+        print(f"총 {total}문제 중 {score}문제를 맞히셨습니다.")
 
 def main():
     """
