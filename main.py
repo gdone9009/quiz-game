@@ -80,6 +80,40 @@ class QuizGame:
         print(f"\n종료! 당신의 최종 점수는 {final_percentage}점입니다.")
         print(f"총 {total}문제 중 {score}문제를 맞히셨습니다.")
 
+        # (6단계 최종 결과 출력 코드 바로 뒤에 추가)
+        self.finalize_game(final_percentage)
+
+    def save_data(self):
+        """
+        [7단계] 변경된 데이터(최고 점수 등)를 JSON 파일에 영구적으로 저장합니다.
+        메모리상의 딕셔너리를 물리적 파일로 옮기는 '직렬화(Serialization)' 과정입니다.
+        """
+        try:
+            with open(self.data_file, 'w', encoding='utf-8') as f:
+                # ensure_ascii=False: 한글이 깨지지 않게 저장
+                # indent=2: 가독성을 위해 들여쓰기 적용
+                json.dump(self.data, f, ensure_ascii=False, indent=2)
+            print("💾 데이터가 안전하게 저장되었습니다.")
+        except Exception as e:
+            print(f"❌ 저장 중 오류 발생: {e}")
+
+    def finalize_game(self, final_percentage):
+        """
+        [7단계] 게임 종료 후 점수를 비교하고 필요시 최고 점수를 갱신합니다.
+        """
+        current_high = self.data.get('high_score', 0)
+        
+        print(f"\n현재 점수: {final_percentage}점 / 기존 최고 점수: {current_high}점")
+        
+        # 현재 점수가 기록보다 높으면 데이터 갱신 및 파일 저장
+        if final_percentage > current_high:
+            print("🎊 축하합니다! 새로운 최고 기록입니다!")
+            self.data['high_score'] = final_percentage
+            self.save_data() # 변경된 내용을 파일에 기록
+        else:
+            print("💡 최고 기록 경신에 실패했습니다. 조금 더 분발해 보세요!")
+
+
 def main():
     """
     프로그램의 진입점(Entry Point).
