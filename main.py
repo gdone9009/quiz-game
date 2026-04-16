@@ -82,11 +82,17 @@ class QuizGame:
                     print("⚠️ 잘못된 입력입니다. '숫자'만 입력할 수 있습니다.")
             
             # 3. 정답 판별 (이미 검증된 choice_num 사용)
+            # [11단계] 정답 판별 및 피드백 로직 개선
             if choice_num == quiz['answer']:
-                print(f"✅ 정답입니다! ({quiz['description']})")
+                print(f"✅ 정답입니다!")
                 score += 1
             else:
+                # 틀렸을 때 정답 번호를 알려주고 바로 아래에서 해설(힌트)을 출력
                 print(f"❌ 틀렸습니다. 정답은 {quiz['answer']}번입니다.")
+            
+            # 정답/오답 여부에 관계없이 해당 문제에 대한 보충 설명(힌트)을 제공
+            # 이는 사용자가 틀린 문제에 대해 즉각적인 피드백을 얻게 함으로써 학습 효과를 높임
+            print(f"💡 추가 설명(힌트): {quiz['description']}")
             
             print("-" * 40)
 
