@@ -101,7 +101,7 @@ class QuizGame:
         print(f"\n종료! 당신의 최종 점수는 {final_percentage}점입니다.")
         print(f"총 {total}문제 중 {score}문제를 맞히셨습니다.")
 
-        # (6단계 최종 결과 출력 코드 바로 뒤에 추가)
+        # (6단계 최종 결과 출력 코드 바로 뒤에 추가하였음)
         self.finalize_game(final_percentage)
 
     def save_data(self):
