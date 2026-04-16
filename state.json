@@ -65,6 +65,19 @@
       ],
       "answer": 3,
       "description": "9번과 10번 승강장 사이 벽으로 뛰어드세요!"
+    },
+    {
+      "id": 6,
+      "category": "111",
+      "question": "222",
+      "options": [
+        "333",
+        "4",
+        "55",
+        "66"
+      ],
+      "answer": 1,
+      "description": "12"
     }
   ]
 }
