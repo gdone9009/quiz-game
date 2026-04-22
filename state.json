@@ -1,10 +1,24 @@
 {
-  "high_score": 100,
+  "high_score": 20,
+  "history": [
+    {
+      "date": "2026-04-22 17:57:04",
+      "total_questions": 5,
+      "correct_answers": 0,
+      "score": 0
+    },
+    {
+      "date": "2026-04-22 17:57:09",
+      "total_questions": 5,
+      "correct_answers": 1,
+      "score": 20
+    }
+  ],
   "quizzes": [
     {
       "id": 1,
       "category": "영화",
-      "question": "전 세계 흥행 1위 영화 <아바타> 1편에 등장하는 나비족의 손가락 개수는?",
+      "question": "전 세계 흥행 1위 영화 <아바타> 1편의 나비족 손가락 개수는?",
       "options": [
         "3개",
         "4개",
@@ -16,8 +30,8 @@
     },
     {
       "id": 2,
-      "category": "드라마",
-      "question": "넷플릭스 <오징어 게임>에서 주인공 성기훈(이정재)의 마지막 참가 번호는?",
+      "category": "시리즈",
+      "question": "넷플릭스 <오징어 게임> 주인공 성기훈의 마지막 참가 번호는?",
       "options": [
         "001번",
         "199번",
@@ -30,7 +44,7 @@
     {
       "id": 3,
       "category": "영화",
-      "question": "영화 <어벤져스: 엔드게임>의 명대사 '나는 너를 ____만큼 사랑해'에 들어갈 숫자는?",
+      "question": "영화 <어벤져스: 엔드게임> 명대사 '나는 너를 ____만큼 사랑해'의 숫자는?",
       "options": [
         "100",
         "1000",
@@ -42,8 +56,8 @@
     },
     {
       "id": 4,
-      "category": "시리즈",
-      "question": "영국 첩보원 제임스 본드(007 시리즈)가 부여받은 살인면허 번호는?",
+      "category": "영화",
+      "question": "제임스 본드(007 시리즈)가 부여받은 살인면허 번호는?",
       "options": [
         "001",
         "003",
@@ -65,58 +79,6 @@
       ],
       "answer": 3,
       "description": "9번과 10번 승강장 사이 벽으로 뛰어드세요!"
-    },
-    {
-      "id": 6,
-      "category": "111",
-      "question": "222",
-      "options": [
-        "333",
-        "4",
-        "55",
-        "66"
-      ],
-      "answer": 1,
-      "description": "12"
-    },
-    {
-      "id": 7,
-      "category": "2",
-      "question": "2",
-      "options": [
-        "2",
-        "2",
-        "2",
-        "2"
-      ],
-      "answer": 2,
-      "description": ""
-    },
-    {
-      "id": 8,
-      "category": "",
-      "question": "",
-      "options": [
-        "",
-        "",
-        "",
-        ""
-      ],
-      "answer": 2,
-      "description": "2"
-    },
-    {
-      "id": 9,
-      "category": "",
-      "question": "2",
-      "options": [
-        "",
-        "",
-        "2",
-        "2"
-      ],
-      "answer": 2,
-      "description": ""
     }
   ]
 }
