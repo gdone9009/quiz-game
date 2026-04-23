@@ -1,19 +1,6 @@
 {
-  "high_score": 20,
-  "history": [
-    {
-      "date": "2026-04-22 17:57:04",
-      "total_questions": 5,
-      "correct_answers": 0,
-      "score": 0
-    },
-    {
-      "date": "2026-04-22 17:57:09",
-      "total_questions": 5,
-      "correct_answers": 1,
-      "score": 20
-    }
-  ],
+  "high_score": 0,
+  "history": [],
   "quizzes": [
     {
       "id": 1,
